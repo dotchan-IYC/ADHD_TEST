@@ -1,0 +1,74 @@
+ADHD Test Netlify 배포용
+
+구조:
+
+index.html
+
+(CSS, JS 모두 index.html 내부에 포함)
+
+
+index.html 내용:
+
+<!DOCTYPE html><html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADHD 간이 테스트</title>
+  <style>
+    body { font-family: sans-serif; padding: 10px; line-height: 1.6; background: #f0f4f8; }
+    .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #333; }
+    p.note { font-size: 0.9em; color: #555; text-align: center; margin-bottom: 20px; }
+    .question { margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #eee; }
+    .question label { display: block; margin-top: 5px; padding: 8px; border-radius: 6px; background: #f7f9fc; cursor: pointer; }
+    .question input[type=radio] { margin-right: 10px; }
+    button { display: block; width: 100%; margin: 20px 0; padding: 15px; border-radius: 10px; cursor: pointer; background: #4caf50; color: white; border: none; font-size: 1.1em; }
+    button:hover { background: #45a049; }
+    #result { margin-top: 20px; font-size: 1.2em; font-weight: bold; text-align: center; color: #333; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ADHD 간이 테스트</h1>
+    <p class="note">※ 참고용 테스트입니다. 의학적 진단은 반드시 전문의 상담이 필요합니다.</p><form id="testForm">
+  <!-- 15문항 동일, 이전 코드 그대로 삽입 -->
+  <div class="question">1. 세부 사항을 잘 놓치거나, 부주의한 실수를 자주 하나요?<br>
+    <label><input type="radio" name="q1" value="2"> 자주</label>
+    <label><input type="radio" name="q1" value="1"> 가끔</label>
+    <label><input type="radio" name="q1" value="0"> 거의 없음</label>
+  </div>
+  <!-- q2 ~ q15 까지 동일 -->
+  <div class="question">15. 일을 시작하기 전에 미루거나 주저하는 경향이 있나요?<br>
+    <label><input type="radio" name="q15" value="2"> 자주</label>
+    <label><input type="radio" name="q15" value="1"> 가끔</label>
+    <label><input type="radio" name="q15" value="0"> 거의 없음</label>
+  </div>
+
+  <button type="button" onclick="calculate()">결과 보기</button>
+</form>
+
+<div id="result"></div>
+
+  </div>  <script>
+    function calculate() {
+      let score = 0;
+      const form = document.forms['testForm'];
+      for (let i = 1; i <= 15; i++) {
+        const radios = form['q' + i];
+        if (!radios.value) {
+          alert(i + '번 질문에 답해주세요.');
+          return;
+        }
+        score += parseInt(radios.value);
+      }
+
+      let resultText = '';
+      if (score <= 7) resultText = '총점: ' + score + '점 → 정상 범위입니다.';
+      else if (score <= 14) resultText = '총점: ' + score + '점 → 집중력 약간 문제 유형';
+      else if (score <= 19) resultText = '총점: ' + score + '점 → 충동/과잉행동형';
+      else resultText = '총점: ' + score + '점 → 혼합형 ADHD 가능성, 전문 상담 권장';
+
+      document.getElementById('result').innerText = resultText;
+    }
+  </script></body>
+</html>
